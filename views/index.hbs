@@ -1,0 +1,21 @@
+
+    <!-- Products Card view -->
+    <section>
+      <div class="container">
+        <div class="row mt-5">
+          {{#each products}}
+          <div class="col-md-3 ">
+            <div class="card" style="width: 16rem;  border-radius:0px;">
+            <img src="{{this.image}}" class="card-img-top" alt="" />
+            <div class="card-body">
+              <h4 class="card-title">{{this.brand}}</h4>
+              <h6 class="card-text">{{this.price}}</h6>
+              <p class="card-text">{{this.description}}</p>
+              <a href="#" class="btn" style="background-color: #dd7973; font-weight:bold; color:aliceblue;">Add to cart</a>
+            </div>
+          </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,22 @@
+<!-- Products Card view -->
+    <section>
+      <div class="container">
+        <h3 class="text-center mt-3">All Products</h3>
+        <hr style="">
+        <div class="row mt-5">
+          {{#each products}}
+          <div class="col-md-3 ">
+            <div class="card" style="width: 16rem;  border-radius:0px;">
+            <img src="/product-images/{{this._id}}.jpg" class="card-img-top" alt="" />
+            <div class="card-body">
+              <h4 class="card-title">{{this.Brand}}</h4>
+              <h6 class="card-text">Rs.{{this.Price}}/-</h6>
+              <p class="card-text">{{this.Description}}</p>
+              <a href="#" class="btn" style="background-color: #dd7973; font-weight:bold; color:aliceblue;">Add to cart</a>
+            </div>
+          </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </section>
