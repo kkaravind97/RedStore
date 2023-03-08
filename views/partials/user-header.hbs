@@ -24,6 +24,22 @@
         </li>
       </ul>
     </div>
+    <div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color:aliceblue; font-weight:bold; color:#dd7973">
+    {{#if user}}
+      {{user.Name}}
+    {{else}}
+      Account
+    {{/if}}
+  </button>
+  <ul class="dropdown-menu">
+    {{#if user}}
+    <li><a href="/logout" style="text-decoration: none;"><button class="dropdown-item" type="button" style="color:#dd7973;">Logout</button></a></li>
+    {{else}}
+    <li><a href="/login" style="text-decoration: none;"><button class="dropdown-item" type="button" style="color:#dd7973;">Login</button></a></li>
+    {{/if}}
+  </ul>
+</div>
   </div>
 </nav>
 </section>
