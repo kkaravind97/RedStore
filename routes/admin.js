@@ -1,6 +1,8 @@
+const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 const productHelpers=require('../helpers/product-helpers');
+var objectId=require('mongodb').ObjectId;
 
 
 //get request for view products
@@ -18,6 +20,7 @@ router.get('/add-products',(req,res)=>{
   res.render('admin/add-products',{admin:true})
 })
 
+//post request for add products
 router.post('/add-products',(req,res)=>{
   console.log(req.body);
   console.log(req.files.Image);
@@ -34,7 +37,16 @@ router.post('/add-products',(req,res)=>{
   })
 })
 
-//post request for add products
+// get request for delete product
+router.get('/delete-product/:id',(req,res)=>{
+  let proId=req.params.id;
+  console.log(proId);
+  productHelpers.deleteProduct(proId).then((response)=>{
+    res.redirect('/admin');
+  })
+})
+
+
 
 
 module.exports = router;

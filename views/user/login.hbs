@@ -11,9 +11,12 @@
                     <label for="">Pasword</label>
                     <input type="password" class="form-control" name="Password" placeholder="Enter password">
                 </div>
+                {{#if loginErr}}
+                    <p class="error text-danger" style="font-size: 0.8rem;">{{loginErr}}</p>
+                {{/if}}
                 <div class="mt-3">
-                    <a href="/signup" class="text-decoration-none" style="color:#dd7973">Create new account?</a>
-                    <button type="submit" class="btn float-end" style="background-color: #dd7973; color:aliceblue; font-weight:bold">Login</button>
+                    <a href="/signup" class="text-decoration-none text-primary" style="">Create new account?</a>
+                    <button type="submit" class="btn btn-primary float-end" style=" color:aliceblue; font-weight:bold">Login</button>
                 </div>
             </form>
         </div>
