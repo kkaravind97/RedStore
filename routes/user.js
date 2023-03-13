@@ -1,5 +1,6 @@
 const { response } = require('express');
 var express = require('express');
+const session = require('express-session');
 var router = express.Router();
 const productHelpers=require('../helpers/product-helpers');
 const userHelpers=require('../helpers/user-helpers');
@@ -13,10 +14,15 @@ const verifyLogin=(req,res,next)=>{
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',async function(req, res, next) {
   let user=req.session.user;
+  let cartCount=null;
+  if(req.session.user){
+    cartCount=await userHelpers.getCartCount(req.session.user._id)
+  }
+
   productHelpers.getAllProducts().then((products)=>{
-    res.render('user/view-products', {products,admin:false,user});
+    res.render('user/view-products', {products,user,cartCount});
   })
   
 });
@@ -37,9 +43,12 @@ router.get('/signup',(req,res)=>{
 })
 
 // post request for signup page
-router.post('/signup',(req,res)=>{
+router.post('/signup',verifyLogin,(req,res)=>{
   userHelpers.doSignUp(req.body).then((response)=>{
     console.log(response);
+    req.session.loggedIn=true;
+    req.session.user=response;
+    res.redirect('/');
   })
 })
 
@@ -65,8 +74,22 @@ router.get('/logout',(req,res)=>{
 })
 
 // get request for cart page
-router.get('/cart',verifyLogin,(req,res)=>{
-  res.render('user/cart');
+router.get('/cart',verifyLogin,async(req,res)=>{
+  let products=await userHelpers.getCartProducts(req.session.user._id)
+  console.log(products);
+  res.render('user/cart',{products,user:req.session.user});
 })
+
+// get request for add to cart
+router.get('/add-to-cart/:id',(req,res)=>{
+  console.log("api call");
+  userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
+    res.json({status:true})
+  })
+})
+
+// post request for change product quantity
+
+
 
 module.exports = router;

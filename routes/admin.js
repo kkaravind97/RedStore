@@ -5,7 +5,7 @@ const productHelpers=require('../helpers/product-helpers');
 var objectId=require('mongodb').ObjectId;
 
 
-//get request for view products
+//get request to view products
 
 router.get('/',(req,res,next)=>{
   productHelpers.getAllProducts().then((products)=>{
@@ -15,12 +15,12 @@ router.get('/',(req,res,next)=>{
   
 })
 
-//get request for add products
+//get request to add products
 router.get('/add-products',(req,res)=>{
-  res.render('admin/add-products')
+  res.render('admin/add-products',{admin:true})
 })
 
-//post request for add products
+//post request to add products
 router.post('/add-products',(req,res)=>{
   console.log(req.body);
   console.log(req.files.Image);
@@ -59,10 +59,6 @@ router.post('/edit-product/:id',(req,res)=>{
   let id=req.params.id;
   productHelpers.updateProduct(req.params.id,req.body).then(()=>{
     res.redirect('/admin');
-    if(req.files.Image){
-      let image=req.files.Image;
-      image.mv('./public/product-images/'+id+'.jpg');
-    }
   })
 })
 
