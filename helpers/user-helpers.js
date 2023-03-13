@@ -104,6 +104,11 @@ module.exports={
                             foreignField:'_id',
                             as:'product'
                         }
+                     },
+                     {
+                        $project:{
+                            item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                        }
                      }
                  ]).toArray()
                  resolve(cartItems)
@@ -118,6 +123,33 @@ module.exports={
                     count=cart.products.length;
                 }
                 resolve(count)
+            })
+         },
+
+         changeProductQuantity:(details)=>{
+            details.count=parseInt(details.count);
+            details.quantity=parseInt(details.quantity);
+            return new Promise((resolve,reject)=>{
+                if(details.count==-1 && details.quantity==1){
+                    db.get().collection(collection.CART_COLLECTION)
+                    .updateOne({_id:new ObjectId(details.cart)},
+                    {
+                        $pull:{products:{item:new ObjectId(details.product)}}
+                    }
+                    ).then((response)=>{
+                        resolve({removeProduct:true})
+                    })
+                }else{
+                    db.get().collection(collection.CART_COLLECTION)
+                    .updateOne({_id:new ObjectId(details.cart),'products.item':new Object(details.product)},
+                    {
+                        $inc:{'products.$.quantity':details.count}
+                    }
+                    ).then((response)=>{
+                        console.log(response);
+                        resolve({status:true})
+                    })
+                }
             })
          }
 }
